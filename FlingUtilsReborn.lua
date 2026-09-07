@@ -35,15 +35,14 @@ local function WaitTillFalse(Bv: BoolValue)
 	coroutine.yield()
 end
 
-function Utils.SpawnToy(ToyName, Location)
-    local argsTable = {}
-    table.insert(argsTable, ToyName)
-    table.insert(argsTable, (Location * CFrame.Angles(math.pi/2, 0, 0)) - Vector3.new(0,25))
-    table.insert(argsTable, Vector3.new(0,ReturnYDegrees(lp.Character.HumanoidRootPart)))
-
-    task.spawn(function()
-        SpawnToy:InvokeServer(table.unpack(argsTable))
-    end)
+function Utils.SpawnToy(toy: string, location: CFrame, rotation: Vector3?)
+	task.spawn(function()
+		SpawnToy:InvokeServer(
+			toy,
+			location,
+			rotation or Vector3.zero
+		)
+	end)
 end
 
 function Utils.QueueToySpawn(ToyName: string, Location: Vector3, NumberOfToys: number?)
@@ -51,7 +50,7 @@ function Utils.QueueToySpawn(ToyName: string, Location: Vector3, NumberOfToys: n
 
     if NumberOfToys then
         for i=1, NumberOfToys do
-            Utils.SpawnToy(ToyName, Location)
+            Utils.SpawnToy(ToyName, CFrame.new(Location))
             WaitTillFalse(bool)
         end
         return
