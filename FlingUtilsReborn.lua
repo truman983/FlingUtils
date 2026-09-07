@@ -65,7 +65,7 @@ function Utils.FindToy(ToyName: string)
     return SpawnedToys:FindFirstChild(ToyName)
 end
 
-function Utils.DeleteToys()
+function Utils.DeleteAllToys()
     for _,toy in SpawnedToys:GetChildren() do
         DestroyToy:FireServer(toy)
     end
