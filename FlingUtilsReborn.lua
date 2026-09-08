@@ -52,6 +52,7 @@ function Utils.QueueToySpawn(ToyName: string, Location: CFrame, NumberOfToys: nu
     if NumberOfToys then
         for i=1, NumberOfToys do
             Utils.SpawnToy(ToyName, Location)
+            task.wait(0.01)
             WaitTillFalse(bool)
         end
         return
@@ -89,5 +90,7 @@ function Utils.DeleteToy(ToyName: string, All: boolean?)
     end
 
 end
+
+
 
 return Utils
