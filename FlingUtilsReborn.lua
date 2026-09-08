@@ -1,5 +1,6 @@
 local Utils = {}
-local lp = game.Players.LocalPlayer
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
 local RepStorage = game:GetService("ReplicatedStorage")
 
 local function GrabFromRepStorage(ObjName: string)
@@ -11,9 +12,8 @@ local SpawnedToys = workspace:FindFirstChild(lp.Name.."SpawnedInToys")
 local SpawnToy: RemoteFunction = GrabFromRepStorage("SpawnToyRemoteFunction")
 local DestroyToy: RemoteEvent = GrabFromRepStorage("DestroyToy")
 
-
 local function ReturnYDegrees(Object: BasePart)
-    local x,y = Object.CFrame:ToOrientation()
+    local _, y = Object.CFrame:ToOrientation()
     return math.deg(y)
 end
 
@@ -36,7 +36,7 @@ local function WaitTillFalse(Bv: BoolValue)
 end
 
 function Utils.SpawnToy(toy: string, location: CFrame, rotation: Vector3?)
-	task.spawn(function()
+    task.spawn(function()
 		SpawnToy:InvokeServer(
 			toy,
 			location,
@@ -45,10 +45,10 @@ function Utils.SpawnToy(toy: string, location: CFrame, rotation: Vector3?)
 	end)
 end
 
-function Utils.QueueToySpawn(ToyName: string, Location: Vector3, NumberOfToys: number?)
+function Utils.QueueToySpawn(ToyName: string, Location: Vector3, NumberOfToys: number)
     local bool = lp.CanSpawnToy
 
-    if NumberOfToys then
+    if NumberOfToys ~= nil then
         for i=1, NumberOfToys do
             Utils.SpawnToy(ToyName, CFrame.new(Location))
             WaitTillFalse(bool)
@@ -56,7 +56,7 @@ function Utils.QueueToySpawn(ToyName: string, Location: Vector3, NumberOfToys: n
         return
     end
 
-    Utils.SpawnToy(ToyName, Location)
+    Utils.SpawnToy(ToyName, CFrame.new(Location))
 
 end
 
@@ -88,8 +88,5 @@ function Utils.DeleteToy(ToyName: string, All: boolean?)
     end
 
 end
-
-
-
 
 return Utils
