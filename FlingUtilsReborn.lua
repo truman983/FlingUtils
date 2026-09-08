@@ -29,16 +29,14 @@ function Utils.SpawnToy(toy: string, location: CFrame, rotation: Vector3?)
 end
 
 function Utils.QueueToySpawn(ToyName: string, Location: CFrame, NumberOfToys: number?)
-    local bool = lp.CanSpawnToy
-
     if NumberOfToys then
         for i=1, NumberOfToys do
+            local bool = lp.CanSpawnToy
+            task.wait(0.1)
             repeat
                 task.wait()
-            until bool.Value
-            
-            print('spawned toy')
-
+            until bool.Value == true
+            task.wait(0.05)
             Utils.SpawnToy(ToyName, Location)
         end
         
@@ -46,7 +44,6 @@ function Utils.QueueToySpawn(ToyName: string, Location: CFrame, NumberOfToys: nu
     end
 
     Utils.SpawnToy(ToyName, Location)
-
 end
 
 function Utils.FindToy(ToyName: string)
