@@ -46,18 +46,18 @@ function Utils.SpawnToy(toy: string, location: CFrame, rotation: Vector3?)
 	end)
 end
 
-function Utils.QueueToySpawn(ToyName: string, Location: Vector3, NumberOfToys: number?)
+function Utils.QueueToySpawn(ToyName: string, Location: CFrame, NumberOfToys: number?)
     local bool = lp.CanSpawnToy
 
     if NumberOfToys then
         for i=1, NumberOfToys do
-            Utils.SpawnToy(ToyName, CFrame.new(Location))
+            Utils.SpawnToy(ToyName, Location)
             WaitTillFalse(bool)
         end
         return
     end
 
-    Utils.SpawnToy(ToyName, CFrame.new(Location))
+    Utils.SpawnToy(ToyName, Location)
 
 end
 
