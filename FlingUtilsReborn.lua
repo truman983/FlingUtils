@@ -1,6 +1,8 @@
 local Utils = {}
-local lp = game.Players.LocalPlayer
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
 local RepStorage = game:GetService("ReplicatedStorage")
+-- random comment here
 
 local function GrabFromRepStorage(ObjName: string)
     return RepStorage:FindFirstChild(ObjName, true)
@@ -13,7 +15,7 @@ local DestroyToy: RemoteEvent = GrabFromRepStorage("DestroyToy")
 
 
 local function ReturnYDegrees(Object: BasePart)
-    local x,y = Object.CFrame:ToOrientation()
+    local _, y = Object.CFrame:ToOrientation()
     return math.deg(y)
 end
 
@@ -56,7 +58,7 @@ function Utils.QueueToySpawn(ToyName: string, Location: Vector3, NumberOfToys: n
         return
     end
 
-    Utils.SpawnToy(ToyName, Location)
+    Utils.SpawnToy(ToyName, CFrame.new(Location))
 
 end
 
@@ -88,8 +90,5 @@ function Utils.DeleteToy(ToyName: string, All: boolean?)
     end
 
 end
-
-
-
 
 return Utils
