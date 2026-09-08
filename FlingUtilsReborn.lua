@@ -36,6 +36,8 @@ function Utils.QueueToySpawn(ToyName: string, Location: CFrame, NumberOfToys: nu
             repeat
                 task.wait()
             until bool.Value
+            
+            print('spawned toy')
 
             Utils.SpawnToy(ToyName, Location)
         end
