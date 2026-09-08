@@ -2,7 +2,6 @@ local Utils = {}
 local Players = game:GetService("Players")
 local lp = Players.LocalPlayer
 local RepStorage = game:GetService("ReplicatedStorage")
-local TestyTest = "hi"
 
 local function GrabFromRepStorage(ObjName: string)
     return RepStorage:FindFirstChild(ObjName, true)
