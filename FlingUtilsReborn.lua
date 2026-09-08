@@ -77,14 +77,9 @@ function Utils.GetSpawnedToys(NameFilter: string?)
     local toys = {}
     for _,toy in SpawnedToys:GetChildren() do
         if toy:IsA("Model") then
-            if NameFilter then
-                if toy.Name == NameFilter then
-                    table.insert(toys, toy)
-                    continue
-                end
+            if not NameFilter or toy.Name == NameFilter then
+                table.insert(toys, toy)
             end
-
-            table.insert(toys, toy)
         end
     end
 
