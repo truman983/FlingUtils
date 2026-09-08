@@ -73,10 +73,17 @@ function Utils.DropToy(toy: Model, location: CFrame)
     end)
 end
 
-function Utils.GetSpawnedToys()
+function Utils.GetSpawnedToys(NameFilter: string?)
     local toys = {}
     for _,toy in SpawnedToys:GetChildren() do
         if toy:IsA("Model") then
+            if NameFilter then
+                if toy.Name == NameFilter then
+                    table.insert(toys, toy)
+                    continue
+                end
+            end
+
             table.insert(toys, toy)
         end
     end
