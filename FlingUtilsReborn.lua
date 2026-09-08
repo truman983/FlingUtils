@@ -47,9 +47,9 @@ function Utils.QueueToySpawn(ToyName: string, Location: CFrame, NumberOfToys: nu
     Utils.SpawnToy(ToyName, Location)
 end
 
-function Utils.UseToy(Toy)
+function Utils.UseToy(toy: Model)
     task.spawn(function()
-        UseToy:FireServer(Toy)
+        UseToy:FireServer(toy)
     end)
 end
 
@@ -74,7 +74,14 @@ function Utils.DropToy(toy: Model, location: CFrame)
 end
 
 function Utils.GetSpawnedToys()
-    return SpawnedToys:GetChildren()
+    local toys = {}
+    for _,toy in SpawnedToys:GetChildren() do
+        if toy:IsA("Model") then
+            table.insert(toys, toy)
+        end
+    end
+
+    return toys
 end
 
 function Utils.FindToy(ToyName: string)
