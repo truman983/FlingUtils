@@ -3,14 +3,15 @@ local Players = game:GetService("Players")
 local lp = Players.LocalPlayer
 local RepStorage = game:GetService("ReplicatedStorage")
 
-local function GrabFromRepStorage(ObjName: string)
-    return RepStorage:FindFirstChild(ObjName, true)
+local function GrabObjectFrom(Obj: Instance, ChildName: string)
+    return Obj:FindFirstChild(ChildName, true)
 end
 
 local SpawnedToys = workspace:FindFirstChild(lp.Name.."SpawnedInToys")
 
-local SpawnToy: RemoteFunction = GrabFromRepStorage("SpawnToyRemoteFunction")
-local DestroyToy: RemoteEvent = GrabFromRepStorage("DestroyToy")
+local SpawnToy: RemoteFunction = GrabObjectFrom(RepStorage, "SpawnToyRemoteFunction")
+local DestroyToy: RemoteEvent = GrabObjectFrom(RepStorage, "DestroyToy")
+local UseToy: RemoteEvent = GrabObjectFrom(RepStorage, "Use")
 
 
 local function ReturnYDegrees(Object: BasePart)
@@ -32,7 +33,7 @@ function Utils.QueueToySpawn(ToyName: string, Location: CFrame, NumberOfToys: nu
     if NumberOfToys then
         for i=1, NumberOfToys do
             local bool = lp.CanSpawnToy
-            task.wait(0.1)
+            task.wait(lp:GetNetworkPing()*2)
             repeat
                 task.wait()
             until bool.Value == true
@@ -44,6 +45,36 @@ function Utils.QueueToySpawn(ToyName: string, Location: CFrame, NumberOfToys: nu
     end
 
     Utils.SpawnToy(ToyName, Location)
+end
+
+function Utils.UseToy(Toy)
+    task.spawn(function()
+        UseToy:FireServer(Toy)
+    end)
+end
+
+function Utils.HoldToy(toy: Model)
+    task.spawn(function()
+        local remote = GrabObjectFrom(toy, "HoldItemRemoteFunction")
+        remote:InvokeServer(
+            toy,
+            lp.Character
+        )
+    end)
+end
+
+function Utils.DropToy(toy: Model, location: CFrame)
+    task.spawn(function()
+        GrabObjectFrom(toy, "DropItemRemoteFunction"):InvokeServer(
+            toy,
+            location,
+            Vector3.zero
+        )
+    end)
+end
+
+function Utils.GetSpawnedToys()
+    return SpawnedToys:GetChildren()
 end
 
 function Utils.FindToy(ToyName: string)
