@@ -18,24 +18,6 @@ local function ReturnYDegrees(Object: BasePart)
     return math.deg(y)
 end
 
-local function WaitTillFalse(Bv: BoolValue)
-	if not Bv.Value then
-		return
-	end
-
-	local thread = coroutine.running()
-
-	local connection
-	connection = Bv.Changed:Connect(function(value)
-		if not value then
-			connection:Disconnect()
-			task.spawn(thread)
-		end
-	end)
-
-	coroutine.yield()
-end
-
 function Utils.SpawnToy(toy: string, location: CFrame, rotation: Vector3?)
 	task.spawn(function()
 		SpawnToy:InvokeServer(
@@ -52,9 +34,11 @@ function Utils.QueueToySpawn(ToyName: string, Location: CFrame, NumberOfToys: nu
     if NumberOfToys then
         for i=1, NumberOfToys do
             Utils.SpawnToy(ToyName, Location)
-            task.wait(0.01)
-            WaitTillFalse(bool)
+            repeat
+                task.wait()
+            until bool.Value
         end
+        
         return
     end
 
