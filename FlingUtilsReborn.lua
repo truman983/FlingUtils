@@ -33,10 +33,11 @@ function Utils.QueueToySpawn(ToyName: string, Location: CFrame, NumberOfToys: nu
 
     if NumberOfToys then
         for i=1, NumberOfToys do
-            Utils.SpawnToy(ToyName, Location)
             repeat
                 task.wait()
             until bool.Value
+
+            Utils.SpawnToy(ToyName, Location)
         end
         
         return
